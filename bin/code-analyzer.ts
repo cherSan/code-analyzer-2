@@ -25,9 +25,10 @@ async function startServer() {
 
   const projectRoot = process.cwd();
   const reportDir = path.join(projectRoot, ".code-analyzer");
-  const libRoot = path.resolve(__dirname, "..");
+  const libRoot = path.resolve(projectRoot, 'node_modules', 'code-analyzer');
   const buildDir = path.join(libRoot, ".next");
   const configPath = path.join(projectRoot, "code-analyzer.config.cjs");
+
 
   // prepare report dir
   await fs.remove(reportDir);
@@ -57,7 +58,6 @@ async function startServer() {
   }
 
   const command = isProd ? `npx next start -p 3001` : `npx next dev -p 3001`;
-
   console.log(chalk.yellow(`🚀 Mode: ${isProd ? "production" : "development"}`));
   console.log(chalk.gray(`🔧 Command: ${command}`));
 

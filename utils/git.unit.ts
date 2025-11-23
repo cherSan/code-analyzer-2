@@ -8,6 +8,7 @@ export interface FileWithStatus {
 export const getModifiedFiles = async () => {
   const git = simpleGit();
   const status = await git.status();
+  console.log(status);
 
   return [
     ...status.created.map<FileWithStatus>((p) => ({ path: p, status: 'created' })),
