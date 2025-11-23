@@ -1,11 +1,6 @@
 import { NextResponse } from 'next/server';
-import simpleGit from 'simple-git';
 import type { TreeDataNode } from 'antd';
-
-interface FileWithStatus {
-    path: string;
-    status: 'modified' | 'deleted' | 'created' | 'conflicted' | 'not_added' | 'staged';
-}
+import { FileWithStatus, getModifiedFiles } from "@/utils/git.unit";
 
 export interface TreeNodeMap {
     title: string;
@@ -56,6 +51,7 @@ function buildTree(files: FileWithStatus[]): TreeDataNode[] {
                 key,
                 children: childrenNodes.length > 0 ? childrenNodes : undefined,
                 isLeaf: childrenNodes.length === 0,
+                selectable: childrenNodes.length === 0,
                 style: { color },
             };
         });
@@ -65,19 +61,7 @@ function buildTree(files: FileWithStatus[]): TreeDataNode[] {
 }
 
 export const GET = async () => {
-    const git = simpleGit();
-    const status = await git.status();
-
-    const files: FileWithStatus[] = [
-        ...status.created.map<FileWithStatus>((p) => ({ path: p, status: 'created' })),
-        ...status.modified.map<FileWithStatus>((p) => ({ path: p, status: 'modified' })),
-        ...status.deleted.map<FileWithStatus>((p) => ({ path: p, status: 'deleted' })),
-        ...status.conflicted.map<FileWithStatus>((p) => ({ path: p, status: 'conflicted' })),
-        ...status.not_added.map<FileWithStatus>((p) => ({ path: p, status: 'not_added' })),
-        ...status.staged.map<FileWithStatus>((p) => ({ path: p, status: 'staged' })),
-    ];
-
-    const treeData: TreeDataNode[] = buildTree(files);
-
+    const files = await getModifiedFiles();
+    const treeData = buildTree(files);
     return NextResponse.json(treeData);
 };

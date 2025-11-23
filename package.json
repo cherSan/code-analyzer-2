@@ -7,21 +7,20 @@
     "code-analyzer": "dist/bin/code-analyzer.ts"
   },
   "scripts": {
-    "dev": "next dev",
+    "dev": "cd example && npm run code-analyzer",
     "build-bin": "tsc -p tsconfig.bin.json",
     "build": "npm run build-bin && next build",
-    "start": "next start",
-    "lint": "eslint"
+    "start": "npx code-analyzer --prod"
   },
   "dependencies": {
-    "@ant-design/nextjs-registry": "^1.2.0",
-    "antd": "^5.29.1",
+    "antd": "^6.0.0",
     "chalk": "^5.6.2",
     "fs-extra": "^11.3.2",
     "next": "16.0.3",
     "react": "19.2.0",
     "react-dom": "19.2.0",
-    "simple-git": "^3.30.0"
+    "simple-git": "^3.30.0",
+    "uuid": "^13.0.0"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
@@ -32,6 +31,7 @@
     "babel-plugin-react-compiler": "1.0.0",
     "eslint": "^9",
     "eslint-config-next": "16.0.3",
+    "prettier": "^3.6.2",
     "tailwindcss": "^4",
     "typescript": "^5"
   }

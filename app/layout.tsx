@@ -1,7 +1,4 @@
 import {AntdThemeProvider} from "@/app/theme";
-import Header from "@/app/header";
-import Footer from "@/app/footer";
-import {AntdRegistry} from "@ant-design/nextjs-registry";
 import Sider from "@/app/sider";
 import Content from "@/app/content";
 import InnerContent from "@/app/inner-content";
@@ -10,6 +7,7 @@ import {PropsWithChildren} from "react";
 import type {Metadata} from "next";
 import {Geist, Geist_Mono} from "next/font/google";
 import "./globals.css";
+import ActionPanel from "@/app/action-panel";
 
 const geistSans = Geist({
     variable: "--font-geist-sans", subsets: ["latin"],
@@ -24,28 +22,22 @@ export const metadata: Metadata = {
 };
 
 const RootLayout = async ({ children }: PropsWithChildren) => {
-    const response = await fetch('http://localhost:3000/api/files');
-    const files = await response.json();
-
     return (
         <html lang="en">
             <body className={`${geistSans.variable} ${geistMono.variable} font-sans`}>
-                <AntdRegistry>
-                    <AntdThemeProvider>
-                        <Layout style={{ minHeight: "100dvh" }}>
-                            <Header />
-                            <div style={{ padding: '0 48px' }}>
-                                <InnerContent>
-                                    <Sider files={files} />
-                                    <Content>
-                                        {children}
-                                    </Content>
-                                </InnerContent>
-                            </div>
-                            <Footer />
+                <AntdThemeProvider>
+                    <Layout style={{ minHeight: "100dvh" }}>
+                        <Layout>
+                            <InnerContent>
+                                <Sider />
+                                <Content>
+                                    {children}
+                                </Content>
+                            </InnerContent>
+                            <ActionPanel />
                         </Layout>
-                    </AntdThemeProvider>
-                </AntdRegistry>
+                    </Layout>
+                </AntdThemeProvider>
             </body>
         </html>
     );
